@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "You must enter a process ID"
+  exit 1
+fi
+
+{
+  while  ps -p "$1" ; do
+    sleep 1
+  done
+
+  curl -s -d "Home desktop job $1 done" ntfy.sh/102529583
+} > /dev/null > /dev/null
