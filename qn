@@ -1,0 +1,21 @@
+#!/bin/bash
+
+CMD_INPUT=$@
+$@ &
+QUIET_PID=$!
+
+if [ -z "$QUIET_PID" ]; then
+  echo "You must enter a process ID"
+  exit 1
+fi
+
+{
+  while  ps -p "$QUIET_PID" ; do
+    sleep 1
+  done
+
+  curl -s -d "Home desktop job $QUIET_PID done" ntfy.sh/102529583
+} > /dev/null > /dev/null &
+NOTIFY_PID=$!
+echo "$CMD_INPUT"
+echo "Process $QUIET_PID started. Notification PID $NOTIFY_PID."
