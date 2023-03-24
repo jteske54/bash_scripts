@@ -3,6 +3,7 @@
 CMD_INPUT=$@
 $@ &
 QUIET_PID=$!
+HOSTNM=`cat /etc/hostname`
 
 if [ -z "$QUIET_PID" ]; then
   echo "You must enter a process ID"
@@ -14,7 +15,7 @@ fi
     sleep 1
   done
 
-  curl -s -d "Home desktop job $QUIET_PID done" ntfy.sh/102529583
+  curl -s -H "Title: Job $QUIET_PID done on $HOSTNM" -d "$CMD_INPUT" ntfy.sh/102529583
 } > /dev/null > /dev/null &
 NOTIFY_PID=$!
 echo "$CMD_INPUT"
